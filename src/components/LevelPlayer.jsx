@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { generateLevelContent, validateAnswer } from '../gemini';
+import { generateLevelContent, validateAnswer } from '../grok';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import Confetti from 'react-confetti';
@@ -382,7 +382,7 @@ const LevelPlayer = () => {
   const correctCount = testResults.filter(r => r.isCorrect).length;
 
   return (
-    <div className="min-h-screen bg-[#0d0f1a] text-white transition-colors duration-500 relative">
+    <div className="min-h-screen bg-base-bg text-white transition-colors duration-500 relative font-sans animate-pageFadeIn">
       {/* Ambient glow */}
       <div className="fixed top-0 left-0 right-0 h-[500px] pointer-events-none overflow-hidden">
         <div className="absolute inset-0" style={{
@@ -458,9 +458,9 @@ const LevelPlayer = () => {
             {/* Dual story panel */}
             <div className="grid md:grid-cols-2 gap-4">
               {/* Learning language */}
-              <div className="rounded-2xl overflow-hidden border" style={{
+              <div className="rounded-[24px] overflow-hidden border" style={{
                 borderColor: `${theme.accent}35`,
-                background: `linear-gradient(135deg, ${theme.accent}08, rgba(0,0,0,0.3))`,
+                background: `linear-gradient(135deg, ${theme.accent}15, rgba(13,13,26,0.6))`,
                 boxShadow: `0 0 40px ${theme.accent}15`,
               }}>
                 <div className="px-5 py-3.5 flex items-center gap-2 border-b" style={{ borderColor: `${theme.accent}20` }}>
@@ -476,9 +476,9 @@ const LevelPlayer = () => {
               </div>
 
               {/* Native language */}
-              <div className="rounded-2xl overflow-hidden border" style={{
+              <div className="rounded-[24px] overflow-hidden border" style={{
                 borderColor: 'rgba(255,255,255,0.08)',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'rgba(19,19,42,0.8)', // card-bg
               }}>
                 <div className="px-5 py-3.5 flex items-center gap-2 border-b border-white/5">
                   <div className="w-2 h-2 rounded-full bg-slate-500" />
@@ -525,9 +525,9 @@ const LevelPlayer = () => {
           <div className="space-y-5 animate-fade-in">
 
             {/* Question card */}
-            <div className="max-w-2xl mx-auto rounded-3xl border overflow-hidden shadow-2xl bg-black/40 backdrop-blur" style={{
-              borderColor: 'rgba(255,255,255,0.15)',
-              boxShadow: `0 0 60px ${theme.accent}1a`,
+            <div className="max-w-2xl mx-auto rounded-[24px] border overflow-hidden shadow-2xl bg-card-bg backdrop-blur-xl" style={{
+              borderColor: 'rgba(255,255,255,0.1) border-t-white/20',
+              boxShadow: `0 20px 60px ${theme.accent}1a, inset 0 1px 0 rgba(255,255,255,0.1)`,
             }}>
               {/* Question header */}
               <div className="px-6 py-5 border-b border-white/5">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generateBasicsData, generateBasicsQuiz } from '../gemini';
+import { generateBasicsData, generateBasicsQuiz } from '../grok';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
@@ -550,10 +550,10 @@ const BasicsPage = () => {
   }, [section, userData, flashcards.length, genLoading, error, generatePhrases]);
 
   if (loading) return (
-    <div className="min-h-screen bg-[#080a12] flex items-center justify-center" style={{ fontFamily: "'Sora','DM Sans',sans-serif" }}>
+    <div className="min-h-screen bg-base-bg flex items-center justify-center font-sans">
       <div className="text-center">
-        <div className="w-12 h-12 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-400 text-sm font-semibold">Loading Basics…</p>
+        <div className="w-12 h-12 border-2 border-primary/30 border-t-primary rounded-full animate-spinCustom mx-auto mb-4" />
+        <p className="text-text-body text-sm font-semibold">Loading Basics…</p>
       </div>
     </div>
   );
@@ -563,8 +563,7 @@ const BasicsPage = () => {
   const meta = LANG_META[learningLang] || DEFAULT_META;
 
   return (
-    <div className="min-h-screen w-full bg-[#080a12] text-white pb-28"
-      style={{ fontFamily: "'Sora','DM Sans',sans-serif" }}>
+    <div className="min-h-screen w-full bg-base-bg text-white pb-28 font-sans animate-pageFadeIn">
 
       {/* error */}
       {error && (
@@ -576,7 +575,7 @@ const BasicsPage = () => {
       )}
 
       {/* ── NAV ── */}
-      <nav className="sticky top-0 z-40 border-b border-white/[0.05] bg-[#080a12]/90 backdrop-blur-2xl">
+      <nav className="sticky top-0 z-40 border-b border-[rgba(255,255,255,0.05)] bg-[rgba(13,13,26,0.8)] backdrop-blur-2xl">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button onClick={() => navigate('/dashboard')}
@@ -627,12 +626,12 @@ const BasicsPage = () => {
         </div>
 
         {/* section tabs */}
-        <div className="flex gap-1 bg-white/5 border border-white/8 rounded-2xl p-1 mb-8 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-1 bg-surface border border-white/[0.06] rounded-[20px] p-1 mb-8 overflow-x-auto scrollbar-hide shadow-md w-fit">
           {SECTIONS.map(s => (
             <button key={s.id} onClick={() => setSection(s.id)}
-              className={`px-5 py-2.5 rounded-xl text-sm font-black whitespace-nowrap transition-all ${section === s.id
-                  ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
-                  : 'text-gray-500 hover:text-white hover:bg-white/5'
+              className={`px-5 py-2.5 rounded-[16px] text-sm font-semibold whitespace-nowrap transition-all duration-300 ${section === s.id
+                  ? 'bg-cta-gradient text-white shadow-[0_4px_15px_rgba(124,58,237,0.25)] scale-[1.02]'
+                  : 'text-text-body hover:text-white hover:bg-white/[0.04]'
                 }`}>
               {s.label}
             </button>
@@ -642,7 +641,7 @@ const BasicsPage = () => {
         {/* ══ OVERVIEW ══ */}
         {section === 'overview' && (
           <div className="space-y-5">
-            <div className="rounded-3xl p-6 border border-white/[0.07] bg-white/[0.02] grid md:grid-cols-2 gap-6">
+            <div className="rounded-[24px] p-6 border border-white/[0.07] bg-card-bg shadow-lg grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-black text-sm text-gray-300 mb-3">📐 Sentence Structure</h3>
                 <div className="flex items-center gap-2 mb-3">
@@ -678,7 +677,7 @@ const BasicsPage = () => {
             </div>
 
             {/* numbers */}
-            <div className="rounded-3xl p-6 border border-white/[0.07] bg-white/[0.02]">
+            <div className="rounded-[24px] p-6 border border-white/[0.07] bg-card-bg shadow-lg">
               <h3 className="font-black text-sm text-gray-300 mb-4">🔢 Numbers 1–10 <span className="text-gray-600 font-semibold">(tap to hear)</span></h3>
               <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
                 {meta.numbers.map((n, i) => (
@@ -703,14 +702,14 @@ const BasicsPage = () => {
               </p>
             </div>
 
-            <div className="rounded-3xl p-6 border border-white/[0.07] bg-white/[0.02]">
+            <div className="rounded-[24px] p-6 border border-white/[0.07] bg-card-bg shadow-lg">
               <h2 className="text-lg font-black mb-4">Vowels <span className="text-gray-600 font-semibold text-sm">({meta.alphabet.length})</span></h2>
               <div className="flex flex-wrap gap-2">
                 {meta.alphabet.map((c, i) => <AlphaTile key={i} char={c} color={meta.color} ttsLang={meta.ttsLang} />)}
               </div>
             </div>
 
-            <div className="rounded-3xl p-6 border border-white/[0.07] bg-white/[0.02]">
+            <div className="rounded-[24px] p-6 border border-white/[0.07] bg-card-bg shadow-lg">
               <h2 className="text-lg font-black mb-4">Consonants <span className="text-gray-600 font-semibold text-sm">({meta.consonants.length})</span></h2>
               <div className="flex flex-wrap gap-2">
                 {meta.consonants.map((c, i) => <AlphaTile key={i} char={c} color="from-gray-600 to-gray-700" ttsLang={meta.ttsLang} />)}
@@ -766,8 +765,8 @@ const BasicsPage = () => {
         {section === 'phrases' && (
           genLoading
             ? <div className="text-center py-16">
-              <div className="w-12 h-12 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-gray-400 text-sm font-semibold">Generating AI survival phrases…</p>
+              <div className="w-12 h-12 border-2 border-primary/30 border-t-primary rounded-full animate-spinCustom mx-auto mb-4" />
+              <p className="text-text-body text-sm font-semibold">Generating AI survival phrases…</p>
               <p className="text-gray-600 text-xs font-medium mt-2">Travel · Dining · Emergency contexts</p>
             </div>
             : <PhrasesTab flashcards={flashcards} ttsLang={meta.ttsLang} meta={meta} />
@@ -780,16 +779,16 @@ const BasicsPage = () => {
       </div>
 
       {/* ── BOTTOM BAR ── */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#080a12]/95 backdrop-blur-2xl border-t border-white/[0.05] px-4 py-4 z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-[rgba(13,13,26,0.85)] backdrop-blur-2xl border-t border-[rgba(255,255,255,0.05)] px-4 py-4 z-50">
         <div className="max-w-5xl mx-auto flex gap-3 justify-center">
           <button onClick={() => navigate('/test')}
-            className="flex-1 max-w-xs py-3.5 rounded-xl font-black text-sm text-black transition-all hover:scale-105"
+            className="flex-1 max-w-xs py-3.5 rounded-[12px] font-black text-sm text-black transition-all hover:scale-[1.02]"
             style={{ background: 'linear-gradient(135deg,#f59e0b,#f97316)', boxShadow: '0 4px 20px rgba(245,158,11,0.3)' }}>
-            ⚡ Placement Test (+20 🪙)
+            ⚡ Practice Test (+20 🪙)
           </button>
           <button onClick={() => navigate('/dashboard')}
-            className="flex-1 max-w-xs py-3.5 rounded-xl font-black text-sm text-white transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', boxShadow: '0 4px 20px rgba(124,58,237,0.3)' }}>
+            className="flex-1 max-w-xs py-3.5 rounded-[12px] font-black text-sm text-white transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', boxShadow: '0 4px 20px rgba(124,58,237,0.3)' }}>
             🗺️ Go to Roadmap
           </button>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generatePlacementTest, validateAnswer } from '../gemini';
+import { generatePlacementTest, validateAnswer } from '../grok';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import DragDropAnswer from './DragDropAnswer';
@@ -121,7 +121,7 @@ const TestPage = () => {
       {!showResults && currentQ && (
         <div className="w-full max-w-2xl p-8 rounded-3xl border border-white/10 bg-black/30 backdrop-blur shadow-2xl">
           <div className="flex justify-between items-center mb-6 text-gray-400 font-bold text-sm">
-            <span>Assessment Test</span>
+            <span>Practice Test</span>
             <span className="bg-white/10 px-3 py-1 rounded-full">Question {currentIdx + 1} / {questions.length}</span>
           </div>
 

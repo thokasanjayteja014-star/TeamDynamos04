@@ -105,10 +105,10 @@ const LevelNode = ({ lvl, onPlay, onUnlock, unlocking, coins, avatar, isCurrent 
   return (
     <div className="relative flex flex-col items-center select-none">
       {isCurrent && isActive && (
-         <div className="absolute -top-[56px] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce pointer-events-none">
-           <div className="text-[42px] drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] filter transition-transform">{avatar}</div>
-           <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-white/90 drop-shadow-md mt-1" />
-         </div>
+        <div className="absolute -top-[56px] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce pointer-events-none">
+          <div className="text-[42px] drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] filter transition-transform">{avatar}</div>
+          <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-white/90 drop-shadow-md mt-1" />
+        </div>
       )}
 
       <div className="group relative z-10">
@@ -125,10 +125,10 @@ const LevelNode = ({ lvl, onPlay, onUnlock, unlocking, coins, avatar, isCurrent 
               : isNoLives ? 'No lives remaining' : isDone ? 'Replay' : 'Play'
           }
           className={`relative w-[68px] h-[68px] rounded-full flex flex-col items-center justify-center font-black text-white border-[3px] transition-all duration-300 ${isDone ? `bg-gradient-to-br ${t.grad} border-white/60 hover:scale-110 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]`
-              : isActive ? `bg-gradient-to-br ${t.grad} border-white shadow-[0_0_30px_${t.glow}99] hover:scale-110 cursor-pointer`
-                : isLocked && canAfford ? 'bg-gray-800/80 border-white/15 hover:scale-105 cursor-pointer hover:border-violet-500/40 shadow-inner'
-                  : isLocked ? 'bg-gray-900/70 border-gray-800/60 cursor-not-allowed opacity-50'
-                    : 'bg-gray-800/60 border-gray-700/40 cursor-not-allowed opacity-40'
+            : isActive ? `bg-gradient-to-br ${t.grad} border-white shadow-[0_0_30px_${t.glow}99] hover:scale-110 cursor-pointer`
+              : isLocked && canAfford ? 'bg-gray-800/80 border-white/15 hover:scale-105 cursor-pointer hover:border-violet-500/40 shadow-inner'
+                : isLocked ? 'bg-gray-900/70 border-gray-800/60 cursor-not-allowed opacity-50'
+                  : 'bg-gray-800/60 border-gray-700/40 cursor-not-allowed opacity-40'
             }`}>
           {unlocking === lvl.level_id
             ? <span className="text-lg animate-spin">⚙️</span>
@@ -323,21 +323,21 @@ const Dashboard = () => {
 
   /* ── derived ── */
   if (loading) return (
-    <div className="min-h-screen bg-[#080a12] flex items-center justify-center" style={{ fontFamily: "'Sora','DM Sans',sans-serif" }}>
+    <div className="min-h-screen bg-base-bg flex items-center justify-center font-sans">
       <div className="text-center">
-        <div className="w-14 h-14 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-400 font-semibold text-sm">Loading your adventure…</p>
+        <div className="w-14 h-14 border-2 border-primary/30 border-t-primary rounded-full animate-spinCustom mx-auto mb-4" />
+        <p className="text-text-body font-semibold text-sm">Loading your adventure…</p>
       </div>
     </div>
   );
   if (!userData) {
-    if (error) {
+      if (error) {
       return (
-        <div className="min-h-screen bg-[#080a12] flex items-center justify-center p-4">
-          <div className="bg-red-950 border border-red-500 p-6 rounded-xl text-red-300 max-w-md text-center">
+        <div className="min-h-screen bg-base-bg flex items-center justify-center p-4 font-sans">
+          <div className="bg-danger/10 border border-danger p-6 rounded-xl text-white max-w-md text-center">
             <h2 className="font-bold text-lg mb-2">Oops! Something went wrong</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()} className="mt-4 bg-red-800 px-4 py-2 rounded-lg font-bold hover:bg-red-700">Refresh Page</button>
+            <button onClick={() => window.location.reload()} className="mt-4 bg-danger px-4 py-2 rounded-lg font-bold hover:bg-danger/80">Refresh Page</button>
           </div>
         </div>
       );
@@ -352,7 +352,7 @@ const Dashboard = () => {
   const allLangs = ['English', 'Hindi', 'Telugu', 'Tamil', 'Kannada'];
 
   return (
-    <div className="min-h-screen w-full bg-[#080a12] text-white" style={{ fontFamily: "'Sora','DM Sans',sans-serif" }}>
+    <div className="min-h-screen w-full bg-base-bg text-white font-sans animate-pageFadeIn">
 
       {/* ── error banner ── */}
       {error && (
@@ -369,7 +369,7 @@ const Dashboard = () => {
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg font-black shadow-lg"
               style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}>🌐</div>
-            <span className="font-black tracking-tight hidden sm:block text-base">langTutor</span>
+            <span className="font-black tracking-tight hidden sm:block text-base">LangTutor</span>
           </div>
 
           <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.07] rounded-full px-4 py-2">
@@ -396,13 +396,11 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 space-y-6">
 
         {/* ── HERO ── */}
-        <div className="relative rounded-3xl overflow-hidden border border-white/[0.06] p-6 md:p-8"
+        <div className="relative rounded-[24px] overflow-hidden border border-[rgba(124,58,237,0.3)] p-6 md:p-8 animate-fadeUp shadow-[0_10px_40px_rgba(124,58,237,0.15)] bg-surface"
           style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(79,70,229,0.08) 50%, rgba(244,63,94,0.06) 100%)' }}>
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-10"
-              style={{ background: 'radial-gradient(circle, #7c3aed, transparent 70%)' }} />
-            <div className="absolute -bottom-16 -left-16 w-60 h-60 rounded-full opacity-8"
-              style={{ background: 'radial-gradient(circle, #f43f5e, transparent 70%)' }} />
+             <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full opacity-20 blur-[50px] animate-blobDrift bg-primary/40" />
+             <div className="absolute -bottom-10 -left-10 w-[300px] h-[300px] rounded-full opacity-20 blur-[40px] animate-blobDrift bg-pink-bright/30" style={{ animationDelay: '2s' }}/>
           </div>
 
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -441,7 +439,7 @@ const Dashboard = () => {
                 <button onClick={() => navigate('/test')}
                   className="flex items-center gap-2 text-sm font-black px-5 py-2.5 rounded-xl text-black transition-all hover:scale-105"
                   style={{ background: 'linear-gradient(135deg,#f59e0b,#f97316)', boxShadow: '0 4px 20px rgba(245,158,11,0.3)' }}>
-                  ⚡ Placement Test
+                  ⚡ Practice Test
                 </button>
                 {currentLevel && (
                   <button onClick={() => navigate(`/level/${currentLevel.level_id}`)}
@@ -484,16 +482,16 @@ const Dashboard = () => {
         </div>
 
         {/* ── TABS ── */}
-        <div className="flex gap-1 bg-white/[0.03] border border-white/[0.06] rounded-2xl p-1 w-fit">
+        <div className="flex gap-1 bg-surface border border-white/[0.06] rounded-[20px] p-1 w-fit shadow-md">
           {[
             { key: 'map', label: '🗺️ Roadmap' },
             { key: 'leaderboard', label: '🏆 Rankings' },
             { key: 'streaks', label: '🔥 Streaks' },
           ].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className={`px-5 py-2.5 rounded-xl text-sm font-black transition-all ${tab === t.key
-                  ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
-                  : 'text-gray-600 hover:text-gray-300 hover:bg-white/[0.04]'
+              className={`px-5 py-2.5 rounded-[16px] text-sm font-semibold transition-all duration-300 ${tab === t.key
+                  ? 'bg-cta-gradient text-white shadow-[0_4px_15px_rgba(124,58,237,0.25)] scale-[1.02]'
+                  : 'text-text-body hover:text-white hover:bg-white/[0.04]'
                 }`}>
               {t.label}
             </button>
@@ -506,136 +504,142 @@ const Dashboard = () => {
 
             {/* roadmap */}
             <div className="flex-1 min-w-0">
-              <div className="relative rounded-3xl border border-white/[0.06] overflow-hidden"
+              <div className="relative rounded-[24px] border border-[rgba(255,255,255,0.06)] overflow-hidden bg-card-bg shadow-xl"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(15,17,30,0.9) 0%, rgba(8,10,18,0.95) 100%)',
                   minHeight: levels.length * 118 + 100,
                 }}>
                 {/* dot grid */}
-                <div className="absolute inset-0 pointer-events-none"
+                <div className="absolute inset-0 pointer-events-none opacity-40"
                   style={{
-                    backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px)',
+                    backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
                     backgroundSize: '28px 28px',
                   }} />
                 {/* spine */}
-                <div className="absolute left-1/2 top-16 bottom-16 w-px pointer-events-none -translate-x-1/2"
-                  style={{ background: 'linear-gradient(to bottom, rgba(124,58,237,0.3), rgba(244,63,94,0.2))' }} />
+                <div className="absolute left-1/2 top-16 bottom-16 w-[2px] pointer-events-none -translate-x-1/2 opacity-30"
+                  style={{ background: 'linear-gradient(to bottom, transparent, rgba(124,58,237,0.5), transparent)' }} />
 
                 <div className="absolute top-5 left-1/2 -translate-x-1/2 text-[10px] font-black text-gray-700 tracking-widest uppercase z-20">
                   ─ START ─
                 </div>
 
-                <div className="relative z-10 w-full" style={{ height: (() => {
-                     const highest = userData?.highest_unlocked_level || 1;
-                     const maxLvl = Math.max(highest + 15, levels.length + 5);
-                     const visualNodesCount = maxLvl + Math.floor(maxLvl / 2); // Levels + Quests
-                     return 100 + visualNodesCount * 130 + 100;
-                })() }}>
+                <div className="relative z-10 w-full" style={{
+                  height: (() => {
+                    const highest = userData?.highest_unlocked_level || 1;
+                    const maxLvl = Math.max(highest + 15, levels.length + 5);
+                    const visualNodesCount = maxLvl + Math.floor(maxLvl / 2); // Levels + Quests
+                    return 100 + visualNodesCount * 130 + 100;
+                  })()
+                }}>
                   {(() => {
-                     // 1. Generate unlimited nodes exactly like Candy Crush
-                     const highest = userData?.highest_unlocked_level || 1;
-                     const maxLvl = Math.max(highest + 15, levels.length + 5);
-                     
-                     const visualNodes = [];
-                     for (let i = 1; i <= maxLvl; i++) {
-                         const actualLvl = levels.find(l => l.level_id === i);
-                         const lvlData = actualLvl || {
-                           level_id: i, is_unlocked: false, is_completed: false, lives_remaining: 5,
-                         };
-                         visualNodes.push({ type: 'level', data: lvlData });
-                         
-                         // Add Quest node after even levels
-                         if (i % 2 === 0) {
-                             visualNodes.push({ type: 'quest', id: i / 2, prevLevel: lvlData });
-                         }
-                     }
+                    // 1. Generate unlimited nodes exactly like Candy Crush
+                    const highest = userData?.highest_unlocked_level || 1;
+                    const maxLvl = Math.max(highest + 15, levels.length + 5);
 
-                     // 2. Plot mathematical S-Curve coordinates
-                     visualNodes.forEach((node, i) => {
-                         // Alternate weaving offsets: 0, 70, 0, -70, etc.
-                         // Math.sin provides natural smooth sweeping curve
-                         node.x = Math.sin(i * 0.8) * 85; 
-                         node.y = 100 + i * 130;  // 130px spacing
-                     });
+                    const visualNodes = [];
+                    for (let i = 1; i <= maxLvl; i++) {
+                      const actualLvl = levels.find(l => l.level_id === i);
+                      const lvlData = actualLvl || {
+                        level_id: i, is_unlocked: false, is_completed: false, lives_remaining: 5,
+                      };
+                      visualNodes.push({ type: 'level', data: lvlData });
 
-                     return (
-                       <>
-                         {/* Giant Continuous SVG S-Curve */}
-                         <svg className="absolute inset-0 pointer-events-none" style={{ width: '400px', height: '100%', left: '50%', marginLeft: '-200px' }}>
-                            {visualNodes.map((node, i) => {
-                               if (i === 0) return null;
-                               const prev = visualNodes[i - 1];
-                               
-                               const px = 200 + prev.x;
-                               const py = prev.y;
-                               const cx = 200 + node.x;
-                               const cy = node.y;
+                      // Add Quest node after even levels
+                      if (i % 2 === 0) {
+                        visualNodes.push({ type: 'quest', id: i / 2, prevLevel: lvlData });
+                      }
+                    }
 
-                               // Direction of bulge (from right side, then left side)
-                               // By making control points extend significantly beyond the nodes,
-                               // the path visually "exits" the side of the node.
-                               const dir = (i % 2 !== 0) ? 1 : -1;
-                               const controlX1 = px + dir * 140;
-                               const controlX2 = cx + dir * 140;
+                    // 2. Plot mathematical S-Curve coordinates
+                    const X_OFFSETS = [0, 80, 0, -80];
+                    visualNodes.forEach((node, i) => {
+                      node.x = X_OFFSETS[i % 4];
+                      node.y = 80 + i * 130;  // 130px spacing
+                    });
 
-                               // Path appearance based on unlock state
-                               const unlocked = node.type === 'level' ? node.data.is_unlocked : (userData?.completed_quests?.includes?.(node.id));
-                               const isPrevUnlocked = prev.type === 'level' ? prev.data.is_completed : (userData?.completed_quests?.includes?.(prev.id));
-                               
-                               const pathColor = isPrevUnlocked 
-                                  ? (unlocked ? 'rgba(245, 158, 11, 0.7)' : 'rgba(245, 158, 11, 0.3)')
-                                  : 'rgba(255,255,255,0.06)';
+                    return (
+                      <>
+                        {/* Giant Continuous SVG Curving Path */}
+                        <svg className="absolute inset-0 pointer-events-none" style={{ width: '400px', height: '100%', left: '50%', marginLeft: '-200px' }}>
+                           {visualNodes.map((node, i) => {
+                              if (i === 0) return null;
+                              const prev = visualNodes[i - 1];
+                              
+                              const px = 200 + prev.x;
+                              const py = prev.y;
+                              const cx = 200 + node.x;
+                              const cy = node.y;
 
-                               return (
-                                  <path 
-                                    key={`path_${i}`}
-                                    d={`M ${px} ${py} C ${controlX1} ${py}, ${controlX2} ${cy}, ${cx} ${cy}`}
-                                    fill="none" 
-                                    stroke={pathColor} 
-                                    strokeWidth="14" 
-                                    strokeDasharray={isPrevUnlocked ? "0" : "0 24"} 
-                                    strokeLinecap="round" 
-                                    className="transition-all duration-700"
-                                  />
-                               );
-                            })}
-                         </svg>
+                              // Direction of bulge
+                              const dir = Math.sign(cx - px) || (node.x === 0 ? Math.sign(px - 200) * -1 : 1);
+                              const controlX1 = px + dir * 50;
+                              const controlY1 = py + 40;
+                              const controlX2 = cx - dir * 50;
+                              const controlY2 = cy - 40;
 
-                         {/* Node Elements Absolutely Positioned */}
-                         {visualNodes.map((node, i) => {
-                            if (node.type === 'level') {
+                              let pathD = "";
+                              if (cx === px) {
+                                 pathD = `M ${px} ${py} Q ${px + (dir * 90)} ${(py+cy)/2} ${cx} ${cy}`;
+                              } else {
+                                 pathD = `M ${px} ${py} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${cx} ${cy}`;
+                              }
+
+                              const unlocked = node.type === 'level' ? node.data.is_unlocked : (userData?.completed_quests?.includes?.(node.id));
+                              const isPrevUnlocked = prev.type === 'level' ? prev.data.is_completed : (userData?.completed_quests?.includes?.(prev.id));
+                              
+                              const pathColor = isPrevUnlocked 
+                                 ? (unlocked ? 'rgba(245, 158, 11, 0.8)' : 'rgba(245, 158, 11, 0.3)')
+                                 : 'rgba(255,255,255,0.06)';
+
                               return (
-                                <div key={`lvl_${node.data.level_id}`} className="absolute" style={{ left: `calc(50% + ${node.x}px)`, top: `${node.y}px`, transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-                                   <LevelNode
-                                     lvl={node.data}
-                                     onPlay={(id) => navigate(`/level/${id}`)}
-                                     onUnlock={handleUnlock}
-                                     unlocking={unlocking}
-                                     coins={userData.total_coins}
-                                     avatar={userData.avatar}
-                                     isCurrent={currentLevel && currentLevel.level_id === node.data.level_id}
-                                   />
-                                </div>
+                                 <path 
+                                   key={`path_${i}`}
+                                   d={pathD}
+                                   fill="none" 
+                                   stroke={pathColor} 
+                                   strokeWidth="12" 
+                                   strokeDasharray={isPrevUnlocked ? "0" : "0 22"} 
+                                   strokeLinecap="round" 
+                                   className="transition-all duration-700 ease-in-out"
+                                 />
                               );
-                            } else {
-                              return (
-                                <div key={`quest_${node.id}`} className="absolute" style={{ left: `calc(50% + ${node.x}px)`, top: `${node.y}px`, transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-                                   <QuestNode 
-                                     questId={node.id}
-                                     isUnlocked={node.prevLevel.is_completed}
-                                     isCompleted={userData?.completed_quests?.includes(node.id)}
-                                     onClick={() => navigate(`/quest/${node.id}`)}
-                                   />
-                                </div>
-                              );
-                            }
-                         })}
-                       </>
-                     );
+                           })}
+                        </svg>
+
+                        {/* Node Elements Absolutely Positioned */}
+                        {visualNodes.map((node, i) => {
+                          if (node.type === 'level') {
+                            return (
+                              <div key={`lvl_${node.data.level_id}`} className="absolute" style={{ left: `calc(50% + ${node.x}px)`, top: `${node.y}px`, transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+                                <LevelNode
+                                  lvl={node.data}
+                                  onPlay={(id) => navigate(`/level/${id}`)}
+                                  onUnlock={handleUnlock}
+                                  unlocking={unlocking}
+                                  coins={userData.total_coins}
+                                  avatar={userData.avatar}
+                                  isCurrent={currentLevel && currentLevel.level_id === node.data.level_id}
+                                />
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div key={`quest_${node.id}`} className="absolute" style={{ left: `calc(50% + ${node.x}px)`, top: `${node.y}px`, transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+                                <QuestNode
+                                  questId={node.id}
+                                  isUnlocked={node.prevLevel.is_completed}
+                                  isCompleted={userData?.completed_quests?.includes(node.id)}
+                                  onClick={() => navigate(`/quest/${node.id}`)}
+                                />
+                              </div>
+                            );
+                          }
+                        })}
+                      </>
+                    );
                   })()}
                 </div>
 
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-black text-gray-800 tracking-widest uppercase">
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-[800] text-primary tracking-[0.2em] uppercase">
                   ─ ∞ MORE ─
                 </div>
               </div>
@@ -753,8 +757,8 @@ const Dashboard = () => {
                 const claimed = !!userData[ms.key];
                 return (
                   <div key={i} className={`flex items-center gap-4 p-4 rounded-2xl border transition-all ${claimed ? 'border-emerald-500/20 bg-emerald-500/5'
-                      : reached ? 'border-amber-500/25 bg-amber-500/5'
-                        : 'border-white/[0.05] bg-white/[0.02]'
+                    : reached ? 'border-amber-500/25 bg-amber-500/5'
+                      : 'border-white/[0.05] bg-white/[0.02]'
                     }`}>
                     <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${claimed ? 'bg-emerald-600' : reached ? 'bg-amber-500' : 'bg-gray-800'
                       }`}>
