@@ -6,9 +6,9 @@ Welcome to **langTutor**, an interactive, AI-driven language learning platform! 
 
 ## 💡 Project Idea
 
-Our core concept is to revolutionize the way people learn new languages by creating a **gamified, adaptive, and AI-driven environment**. Instead of relying on static courses and repetitive modules, langTutor uses cutting-edge generative AI to tailor lessons, conversational scenarios, and tests directly to the user's progress and skill level.
+Our core concept is to revolutionize the way people learn new languages by creating a **gamified, adaptive, and AI-driven environment**. Instead of relying on static courses and repetitive modules, langTutor uses cutting-edge generative AI to tailor lessons, conversational scenarios, and tests directly to the user's progress and skill level. The platform is exclusively focused on 5 languages: **Hindi, Telugu, Kannada, Tamil, and English**.
 
-With engaging features like drag-and-drop mechanics, a visually stunning S-Curve roadmap (inspired by Candy Crush), and dynamic level progressions, users can actively interact with language concepts in a modern and highly responsive user interface.
+With engaging features like drag-and-drop mechanics, a visually stunning roadmap, and dynamic level progressions, users can actively interact with language concepts in a modern and highly responsive user interface.
 
 ---
 
