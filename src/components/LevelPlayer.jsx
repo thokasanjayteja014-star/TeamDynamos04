@@ -167,20 +167,19 @@ const DragDropEngine = ({ availableTiles, currentAnswer, setCurrentAnswer, accen
                 onClick={() => clickTile(word, 'answer', i)}
                 className="relative px-4 py-2 rounded-xl font-bold text-sm cursor-pointer select-none transition-all duration-150 script-tile"
                 style={{
-                  background: 'rgba(139,92,246,0.2)',
-                  border: '1.5px solid rgba(139,92,246,0.45)',
-                  color: '#c4b5fd',
-                  boxShadow: '0 2px 10px rgba(139,92,246,0.15)',
+                  background: `${accent}20`,
+                  border: `2px solid ${accent}`,
+                  color: '#ffffff',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                  boxShadow: `0 2px 10px ${accent}40`,
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(244,63,94,0.18)';
-                  e.currentTarget.style.borderColor = 'rgba(244,63,94,0.4)';
-                  e.currentTarget.style.color = '#fda4af';
+                  e.currentTarget.style.background = `${accent}40`;
+                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.03)';
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(139,92,246,0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(139,92,246,0.45)';
-                  e.currentTarget.style.color = '#c4b5fd';
+                  e.currentTarget.style.background = `${accent}20`;
+                  e.currentTarget.style.transform = '';
                 }}
               >
                 {dropZone === 'answer' && dropIdx === i && dragInfo?.source === 'answer' && (
@@ -217,19 +216,19 @@ const DragDropEngine = ({ availableTiles, currentAnswer, setCurrentAnswer, accen
                 onClick={() => clickTile(word, 'bank', i)}
                 className="px-4 py-2 rounded-xl font-bold text-sm cursor-pointer select-none transition-all duration-150 script-tile"
                 style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1.5px solid rgba(255,255,255,0.12)',
-                  color: '#e2e8f0',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                  background: 'rgba(255,255,255,0.15)',
+                  border: '1.5px solid rgba(255,255,255,0.3)',
+                  color: '#ffffff',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
                   e.currentTarget.style.transform = 'translateY(-2px) scale(1.03)';
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
                   e.currentTarget.style.transform = '';
                 }}
               >
@@ -291,14 +290,12 @@ const LevelPlayer = () => {
           setLoadingMsg(`Crafting a ${uData.learning_lang} story for Level ${levelId}...`);
           const difficulty = Math.min(5, Math.ceil(parseInt(levelId) / 2));
           content = await generateLevelContent(uData.learning_lang, uData.native_lang, levelId, difficulty);
-          // Cap questions to 6
-          if (content.questions?.length > 6) content.questions = content.questions.slice(0, 6);
           await updateDoc(doc(db, 'level_progress', `${uid}_level_${levelId}`), { current_story_data: content });
         }
 
         setStoryContent(content);
         setQuestions(
-          (content.questions || []).slice(0, 6).map(q => ({
+          (content.questions || []).map(q => ({
             ...q,
             available_tiles: [...(q.available_tiles || [])].sort(() => Math.random() - 0.5),
           }))
@@ -385,9 +382,7 @@ const LevelPlayer = () => {
   const correctCount = testResults.filter(r => r.isCorrect).length;
 
   return (
-    <div className="page min-h-screen" style={{
-      background: `linear-gradient(160deg, var(--surface-0) 0%, var(--surface-0) 100%)`,
-    }}>
+    <div className="min-h-screen bg-[#0d0f1a] text-white transition-colors duration-500 relative">
       {/* Ambient glow */}
       <div className="fixed top-0 left-0 right-0 h-[500px] pointer-events-none overflow-hidden">
         <div className="absolute inset-0" style={{
@@ -448,14 +443,14 @@ const LevelPlayer = () => {
           <div className="space-y-6 animate-fade-in">
 
             {/* Header */}
-            <div className="text-center space-y-2">
-              <span className={`badge ${theme.pill} text-xs`}>
+            <div className="text-center space-y-3 mb-6">
+              <span className={`badge ${theme.pill} text-xs font-black uppercase tracking-wider py-1.5 px-4 rounded-full border mb-4 inline-block`}>
                 📖 Read the story, then take the quiz
               </span>
-              <h1 className="text-2xl md:text-3xl font-black">
+              <h1 className="text-3xl md:text-5xl font-black mb-2 tracking-tight block text-white drop-shadow-md">
                 Level {levelId} — <span style={{ color: theme.accent }}>{userData?.learning_lang} Story</span>
               </h1>
-              <p className="text-slate-400 text-sm font-medium">
+              <p className="text-slate-400 text-base md:text-lg font-medium max-w-lg mx-auto">
                 Study both versions below. The quiz draws questions directly from this story.
               </p>
             </div>
@@ -473,8 +468,8 @@ const LevelPlayer = () => {
                   <span className="font-black text-sm" style={{ color: theme.accent }}>{userData?.learning_lang}</span>
                   <span className="text-xs text-slate-500 ml-auto font-medium">Learning language</span>
                 </div>
-                <div className="p-6">
-                  <p className="text-lg leading-relaxed font-bold text-slate-100 script-tile">
+                <div className="p-8">
+                  <p className="text-2xl leading-loose font-black text-white script-tile tracking-wide">
                     {storyContent.story_text_learning}
                   </p>
                 </div>
@@ -490,8 +485,8 @@ const LevelPlayer = () => {
                   <span className="font-black text-sm text-slate-300">{userData?.native_lang}</span>
                   <span className="text-xs text-slate-600 ml-auto font-medium">Translation</span>
                 </div>
-                <div className="p-6">
-                  <p className="text-base leading-relaxed text-slate-300 font-semibold">
+                <div className="p-8 flex items-center h-full">
+                  <p className="text-xl leading-relaxed text-slate-300 font-bold">
                     {storyContent.story_text_native}
                   </p>
                 </div>
@@ -530,10 +525,9 @@ const LevelPlayer = () => {
           <div className="space-y-5 animate-fade-in">
 
             {/* Question card */}
-            <div className="rounded-2xl border overflow-hidden" style={{
-              borderColor: 'rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.02)',
-              boxShadow: `0 0 60px ${theme.accent}0a`,
+            <div className="max-w-2xl mx-auto rounded-3xl border overflow-hidden shadow-2xl bg-black/40 backdrop-blur" style={{
+              borderColor: 'rgba(255,255,255,0.15)',
+              boxShadow: `0 0 60px ${theme.accent}1a`,
             }}>
               {/* Question header */}
               <div className="px-6 py-5 border-b border-white/5">
@@ -547,29 +541,23 @@ const LevelPlayer = () => {
                 </div>
 
                 {/* Question text */}
-                <h2 className="text-xl md:text-2xl font-black text-white leading-snug">
+                <h2 className="text-2xl md:text-3xl font-black text-white text-center leading-snug mt-2 mb-4">
                   {currentQ.text_native}
                 </h2>
 
+                <p className="text-center font-bold text-sm mb-4" style={{ color: theme.accent }}>
+                    Translate this into {userData?.learning_lang}
+                </p>
+
                 {/* Hint if available */}
                 {currentQ.text_learning && (
-                  <div className="mt-3 px-4 py-2.5 rounded-xl inline-block" style={{
-                    background: `${theme.accent}12`,
-                    border: `1px solid ${theme.accent}25`,
-                  }}>
+                  <div className="mt-1 text-center">
                     <p className="text-xs text-slate-400 font-semibold mb-0.5">Reference from story</p>
                     <p className="text-sm font-bold script-tile" style={{ color: theme.accent }}>
                       {currentQ.text_learning}
                     </p>
                   </div>
                 )}
-
-                <p className="text-xs text-slate-500 font-semibold mt-3 flex items-center gap-1.5">
-                  <span>🧩</span>
-                  <span>
-                    Build your answer in <span className="font-black text-white">{userData?.learning_lang}</span> using the tiles below
-                  </span>
-                </p>
               </div>
 
               {/* Drag drop */}
@@ -584,20 +572,21 @@ const LevelPlayer = () => {
             </div>
 
             {/* Navigation */}
-            <div className="flex gap-3">
+            <div className="max-w-2xl mx-auto flex gap-3">
               {currentIdx > 0 && (
                 <button
                   onClick={() => setCurrentIdx(i => i - 1)}
-                  className="btn btn-secondary btn-md"
+                  className="px-6 py-2.5 rounded-xl font-bold text-gray-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                 >
-                  ← Back
+                  Back
                 </button>
               )}
               <div className="flex-1" />
               {currentIdx < questions.length - 1 ? (
                 <button
                   onClick={() => setCurrentIdx(i => i + 1)}
-                  className={`btn btn-md ${theme.btn} text-white font-black`}
+                  className={`px-8 py-2.5 rounded-xl font-black text-white transition-all shadow-lg hover:scale-105`}
+                  style={{ background: theme.accent, boxShadow: `0 4px 20px ${theme.accent}40` }}
                 >
                   Next →
                 </button>
@@ -605,16 +594,9 @@ const LevelPlayer = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={submitting}
-                  className="btn btn-success btn-md font-black"
+                  className="px-8 py-2.5 rounded-xl font-black text-white bg-emerald-500 hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20"
                 >
-                  {submitting ? (
-                    <>
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Checking...
-                    </>
-                  ) : (
-                    'Submit Answers ✓'
-                  )}
+                  {submitting ? 'Checking...' : 'Submit Answers ✓'}
                 </button>
               )}
             </div>

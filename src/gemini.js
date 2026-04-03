@@ -30,9 +30,10 @@ A response like "main khaana khaata hoon" for Hindi is WRONG. "मैं खा�
    1. LEVEL CONTENT — story + questions (levels only)
 ═══════════════════════════════════════════════════ */
 export const generateLevelContent = async (learningLanguage, nativeLanguage, levelId, levelDifficulty) => {
-  const numQuestions = Math.min(2 + Math.floor((levelId - 1) * 0.8), 6); // 2→3→4→5→6 capped at 6
+  const numQuestions = parseInt(levelId) + 1; // Level 1 = 2, Level 2 = 3, etc.
+  const targetWordCount = 40 + (parseInt(levelId) * 20); // Scaled word count
 
-  const prompt = `You are an expert language teacher creating a story-based exercise.
+  const prompt = `You are an expert language teacher creating a compelling, culturally relevant story-based exercise.
 
 Learning Language: ${learningLanguage}
 Native Language: ${nativeLanguage}
@@ -46,7 +47,7 @@ Generate EXACTLY ${numQuestions} questions based on the story.
 Return ONLY this JSON (no markdown, no extra text):
 
 {
-  "story_text_learning": "A short story written entirely in the PURE NATIVE SCRIPT of ${learningLanguage}.",
+  "story_text_learning": "A rich, logical, and interesting narrative story of approximately ${targetWordCount} words written entirely in the PURE NATIVE SCRIPT of ${learningLanguage}. The narrative depth and vocabulary should scale up with the ${levelDifficulty} difficulty.",
   "story_text_native": "The exact translation of the story in ${nativeLanguage}",
   "questions": [
     {
@@ -66,7 +67,7 @@ CRITICAL RULES:
 4. Distractors must be plausible ${learningLanguage} words, not random.
 5. Generate EXACTLY ${numQuestions} questions.
 6. Questions must test comprehension of the story directly.
-7. Difficulty ${levelDifficulty}: ${levelDifficulty <= 2 ? 'simple vocabulary, short sentences' : levelDifficulty <= 3 ? 'moderate vocabulary' : 'complex grammar, advanced vocabulary'}.
+7. Difficulty ${levelDifficulty}: ${levelDifficulty <= 2 ? 'use simple vocabulary, present tense, and very short sentences' : levelDifficulty <= 3 ? 'use moderate vocabulary, compound sentences, and introduce past tense' : 'use complex grammar, advanced vocabulary, richer narrative, and mixed tenses'}.
 
 Return ONLY raw JSON.`;
 
@@ -76,7 +77,7 @@ Return ONLY raw JSON.`;
         { role: "system", content: "You are a perfect JSON generator for language learning content. Output ONLY valid JSON. Never use romanization for Indian language scripts." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.7,
     });
@@ -170,7 +171,7 @@ Return ONLY raw JSON.`;
         { role: "system", content: "Perfect JSON generator. Never romanize Indian language scripts." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.6,
     });
@@ -225,7 +226,7 @@ RULES:
         { role: "system", content: "Perfect JSON quiz generator. Never romanize Indian scripts. Generate exactly 6 questions." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.7,
     });
@@ -281,7 +282,7 @@ Return ONLY raw JSON.`;
         { role: "system", content: "Language assessment JSON generator. Pure native scripts only. No romanization." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.5,
     });
