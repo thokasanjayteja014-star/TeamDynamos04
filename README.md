@@ -1,5 +1,7 @@
 # langTutor - Intelligent Language Learning Platform 🌍🤖
 
+**📺 [Watch Video Presentation on Google Drive](https://drive.google.com/file/d/19SPsIoFinO-cW2GDMbHl4chFUKhpdDzk/view?usp=sharing)**
+
 Welcome to **langTutor**, an interactive, AI-driven language learning platform! Built with modern web technologies, this platform gamifies the learning experience and adapts to users in real time. We leverage generative AI (Groq) along with Firebase to deliver a personalized, resilient, and engaging experience.
 
 ---
