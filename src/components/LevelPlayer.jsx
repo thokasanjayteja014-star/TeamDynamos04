@@ -40,12 +40,12 @@ const Dots = ({ total, current, results }) => (
   <div className="flex items-center gap-1.5">
     {Array.from({ length: total }).map((_, i) => (
       <div key={i} className={`rounded-full transition-all duration-300 ${i < results.length
-          ? results[i]?.isCorrect
-            ? 'w-3 h-3 bg-emerald-400'
-            : 'w-3 h-3 bg-rose-400'
-          : i === current
-            ? 'w-6 h-3 bg-white'
-            : 'w-3 h-3 bg-white/15'
+        ? results[i]?.isCorrect
+          ? 'w-3 h-3 bg-emerald-400'
+          : 'w-3 h-3 bg-rose-400'
+        : i === current
+          ? 'w-6 h-3 bg-white'
+          : 'w-3 h-3 bg-white/15'
         }`} />
     ))}
   </div>
@@ -546,7 +546,7 @@ const LevelPlayer = () => {
                 </h2>
 
                 <p className="text-center font-bold text-sm mb-4" style={{ color: theme.accent }}>
-                    Translate this into {userData?.learning_lang}
+                  Translate this into {userData?.learning_lang}
                 </p>
 
                 {/* Hint if available */}
@@ -632,8 +632,8 @@ const LevelPlayer = () => {
 
             {/* Hero */}
             <div className={`rounded-3xl p-8 text-center border ${allPassed
-                ? 'bg-emerald-950/50 border-emerald-500/25'
-                : 'bg-rose-950/50 border-rose-500/25'
+              ? 'bg-emerald-950/50 border-emerald-500/25'
+              : 'bg-rose-950/50 border-rose-500/25'
               }`}>
               <div className="text-6xl mb-4 inline-block animate-bounce">
                 {allPassed ? '🏆' : '💔'}
@@ -697,8 +697,8 @@ const LevelPlayer = () => {
                     <div>
                       <p className="section-title mb-1.5">Your answer</p>
                       <p className={`text-base font-black script-tile ${res.isCorrect
-                          ? 'text-emerald-300'
-                          : 'text-rose-400 line-through decoration-rose-500/70'
+                        ? 'text-emerald-300'
+                        : 'text-rose-400 line-through decoration-rose-500/70'
                         }`}>
                         {res.yourAnswer || '(No answer given)'}
                       </p>

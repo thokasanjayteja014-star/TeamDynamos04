@@ -11,6 +11,7 @@ import BasicsPage from './components/BasicsPage';
 import Dashboard from './components/Dashboard';
 import TestPage from './components/TestPage';
 import LevelPlayer from './components/LevelPlayer';
+import QuestPage from './components/QuestPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -79,6 +80,10 @@ function App() {
         <Route
           path="/level/:levelId"
           element={user && hasOnboarded ? <LevelPlayer /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/quest/:questId"
+          element={user && hasOnboarded ? <QuestPage /> : <Navigate to="/" />}
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

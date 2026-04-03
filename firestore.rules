@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 🔑 Helper: check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // 🔑 Helper: check if user owns the document based on doc ID
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // 🔑 Helper: check if incoming data belongs to the user
+    function isIncomingOwner() {
+      return request.resource.data.user_id == request.auth.uid;
+    }
+
+    // 🔑 Helper: check if existing document belongs to user
+    // We also return true if it doesn't exist (resource == null) 
+    // to prevent the app from crashing when checking if a level is unlocked.
+    function isResourceOwner() {
+      return resource == null || resource.data.user_id == request.auth.uid;
+    }
+
+    // =========================
+    // USERS COLLECTION
+    // =========================
+    match /users/{userId} {
+      // ✅ Allow everyone to read so the Leaderboard query works!
+      allow read: if isAuthenticated();
+
+      // ✅ Users can only create or edit their OWN user document
+      allow create, update: if isAuthenticated() && isOwner(userId);
+
+      // No delete allowed
+      allow delete: if false;
+    }
+
+    // =========================
+    // LEVEL PROGRESS COLLECTION
+    // =========================
+    match /level_progress/{docId} {
+
+      // ✅ Read allowed if it's their own progress OR if the doc doesn't exist yet
+      // This fixes the "Missing Permissions" bug when the dashboard checks for new locked levels!
+      allow read: if isAuthenticated() && isResourceOwner();
+
+      // Create & Update (Check that the user_id field matches their auth ID)
+      allow create, update: if isAuthenticated() && isIncomingOwner();
+
+      // No delete
+      allow delete: if false;
+    }
+
+    // =========================
+    // USER INVENTORY
+    // =========================
+    match /user_inventory/{docId} {
+
+      allow read: if isAuthenticated() && isResourceOwner();
+
+      allow create, update: if isAuthenticated() && isIncomingOwner();
+
+      allow delete: if false;
+    }
+
+  }
+}

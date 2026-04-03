@@ -15,12 +15,22 @@ const LANG_ICONS = {
 
 const AVATARS = ['🧑‍🎓', '👩‍🚀', '🧙‍♂️', '🥷', '🦸‍♀️', '🦁', '🦊', '🐸', '🐉', '🦅', '🌟', '🎯'];
 
-const STEPS = ['Profile', 'Languages', 'Avatar'];
+const ALL_INTERESTS = [
+  { id: 'Gaming', icon: '🎮' },
+  { id: 'Fashion', icon: '👗' },
+  { id: 'Learning', icon: '📚' },
+  { id: 'Foods', icon: '🍔' },
+  { id: 'Travel', icon: '✈️' },
+  { id: 'Music', icon: '🎵' }
+];
+
+const STEPS = ['Profile', 'Interests', 'Languages', 'Avatar'];
 
 const Onboarding = ({ setHasOnboarded }) => {
   const [step, setStep] = useState(0);
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
+  const [interests, setInterests] = useState([]);
   const [nativeLang, setNative] = useState('English');
   const [learningLang, setLearn] = useState('Telugu');
   const [avatar, setAvatar] = useState('🧑‍🎓');
@@ -30,8 +40,15 @@ const Onboarding = ({ setHasOnboarded }) => {
 
   const canNext = () => {
     if (step === 0) return username.trim().length >= 2 && fullName.trim().length >= 2;
-    if (step === 1) return nativeLang !== learningLang;
+    if (step === 1) return interests.length > 0;
+    if (step === 2) return nativeLang !== learningLang;
     return true;
+  };
+
+  const toggleInterest = (id) => {
+    setInterests(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
   };
 
   const handleSave = async () => {
@@ -43,6 +60,7 @@ const Onboarding = ({ setHasOnboarded }) => {
       await setDoc(doc(db, 'users', uid), {
         uid, username: username.trim(), full_name: fullName.trim(),
         email: auth.currentUser.email,
+        interests: interests, // Save interests natively
         native_lang: nativeLang, learning_lang: learningLang, avatar,
         total_coins: 30, // Starting bonus
         streak_days: 1, // Start newly onboarded user with a 1-day streak
@@ -67,7 +85,7 @@ const Onboarding = ({ setHasOnboarded }) => {
 
   const goNext = () => {
     setError('');
-    if (step === 1 && nativeLang === learningLang) {
+    if (step === 2 && nativeLang === learningLang) {
       setError('You cannot learn a language you already speak natively.');
       return;
     }
@@ -96,7 +114,7 @@ const Onboarding = ({ setHasOnboarded }) => {
               style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}>
               🌐
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">LinguaPath</h1>
+            <h1 className="text-2xl font-black text-white tracking-tight">langTutor</h1>
           </div>
           <p className="text-gray-500 text-sm font-medium">Let's set up your profile</p>
         </div>
@@ -114,7 +132,7 @@ const Onboarding = ({ setHasOnboarded }) => {
                 <span className={`text-xs font-black hidden sm:block ${i === step ? 'text-violet-300' : 'text-gray-600'}`}>{s}</span>
               </div>
               {i < STEPS.length - 1 && (
-                <div className={`flex-1 max-w-[48px] h-px transition-all ${i < step ? 'bg-violet-600' : 'bg-gray-800'}`} />
+                <div className={`flex-1 max-w-[32px] h-px transition-all ${i < step ? 'bg-violet-600' : 'bg-gray-800'}`} />
               )}
             </React.Fragment>
           ))}
@@ -154,8 +172,45 @@ const Onboarding = ({ setHasOnboarded }) => {
             </div>
           )}
 
-          {/* ── STEP 1: Languages ── */}
+          {/* ── STEP 1: Interests (NEW) ── */}
           {step === 1 && (
+            <div className="space-y-5 animate-fade-in">
+              <div>
+                <h2 className="text-xl font-black text-white mb-1">What are your interests?</h2>
+                <p className="text-gray-500 text-sm font-medium">Select topics you love. We'll give you custom rewards based on these!</p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {ALL_INTERESTS.map((item) => {
+                  const isSelected = interests.includes(item.id);
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => toggleInterest(item.id)}
+                      className={`relative overflow-hidden flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
+                        isSelected 
+                          ? 'border-violet-500 shadow-[0_0_20px_rgba(124,58,237,0.3)] bg-violet-600/20 scale-105' 
+                          : 'border-white/10 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <span className="text-3xl mb-2 drop-shadow-md">{item.icon}</span>
+                      <span className={`text-sm font-bold ${isSelected ? 'text-violet-200' : 'text-gray-400'}`}>
+                        {item.id}
+                      </span>
+                      {isSelected && (
+                        <div className="absolute top-2 right-2 w-4 h-4 bg-violet-500 rounded-full flex items-center justify-center">
+                          <span className="text-[10px] text-white font-black shrink-0">✓</span>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 2: Languages ── */}
+          {step === 2 && (
             <div className="space-y-6 animate-fade-in">
               <div>
                 <h2 className="text-xl font-black text-white mb-1">Your Languages</h2>
@@ -231,8 +286,8 @@ const Onboarding = ({ setHasOnboarded }) => {
             </div>
           )}
 
-          {/* ── STEP 2: Avatar ── */}
-          {step === 2 && (
+          {/* ── STEP 3: Avatar ── */}
+          {step === 3 && (
             <div className="space-y-5 animate-fade-in">
               <div>
                 <h2 className="text-xl font-black text-white mb-1">Pick Your Avatar</h2>
