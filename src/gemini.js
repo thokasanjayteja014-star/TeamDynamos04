@@ -14,6 +14,18 @@ const extractJSON = (text) => {
   }
 };
 
+const groqCompletionWithFallback = async (options) => {
+  try {
+    return await groq.chat.completions.create({ ...options, model: "llama-3.3-70b-versatile" });
+  } catch (error) {
+    if (error?.status === 429 || error?.status === 400 || String(error).includes("429") || String(error).includes("rate")) {
+      console.warn("Primary model limit hit. Seamlessly falling back to llama-3.1-8b-instant.");
+      return await groq.chat.completions.create({ ...options, model: "llama-3.1-8b-instant" });
+    }
+    throw error;
+  }
+};
+
 /* ── Script enforcement note (injected into every prompt) ─── */
 const SCRIPT_RULE = (lang) => `
 CRITICAL SCRIPT RULE: Every single word/character in ${lang} MUST use its own native script.
@@ -72,12 +84,11 @@ CRITICAL RULES:
 Return ONLY raw JSON.`;
 
   try {
-    const result = await groq.chat.completions.create({
+    const result = await groqCompletionWithFallback({
       messages: [
         { role: "system", content: "You are a perfect JSON generator for language learning content. Output ONLY valid JSON. Never use romanization for Indian language scripts." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.7,
     });
@@ -112,12 +123,11 @@ Compare the MEANING (not exact spelling/order).
 Return ONLY this JSON: {"is_correct": true_or_false, "similarity_score": 0.0_to_1.0}`;
 
   try {
-    const result = await groq.chat.completions.create({
+    const result = await groqCompletionWithFallback({
       messages: [
         { role: "system", content: "Answer validator. Return only JSON." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.1-8b-instant",
       response_format: { type: "json_object" },
       temperature: 0.1,
     });
@@ -146,7 +156,7 @@ ReOutput STRICTLY in JSON format:
   "alphabet": "Name the script used and provide 8-12 fundamental letters/vowels as an example.",
   "pronunciation": "Provide a detailed paragraph on how pronunciation/tones and vowels generally work in ${learningLanguage}.",
   "sentenceStructure": "Explain the grammar and sentence structure (e.g., Subject-Object-Verb) with clear examples showing the differences to ${nativeLanguage}.",
-  "flashcards": [
+  "phrases": [
     { "term": "phrase in ${learningLanguage} native script", "definition": "meaning in ${nativeLanguage}", "category": "Travel" },
     { "term": "phrase in ${learningLanguage} native script", "definition": "meaning in ${nativeLanguage}", "category": "Dining" },
     { "term": "phrase in ${learningLanguage} native script", "definition": "meaning in ${nativeLanguage}", "category": "Greeting" },
@@ -166,12 +176,11 @@ Return ONLY raw JSON. Generate exactly 12 highly useful real-life flashcard phra
 Return ONLY raw JSON.`;
 
   try {
-    const result = await groq.chat.completions.create({
+    const result = await groqCompletionWithFallback({
       messages: [
         { role: "system", content: "Perfect JSON generator. Never romanize Indian language scripts." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.6,
     });
@@ -221,12 +230,11 @@ RULES:
 6. Return ONLY raw JSON.`;
 
   try {
-    const result = await groq.chat.completions.create({
+    const result = await groqCompletionWithFallback({
       messages: [
         { role: "system", content: "Perfect JSON quiz generator. Never romanize Indian scripts. Generate exactly 6 questions." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.7,
     });
@@ -277,12 +285,11 @@ RULES:
 Return ONLY raw JSON.`;
 
   try {
-    const result = await groq.chat.completions.create({
+    const result = await groqCompletionWithFallback({
       messages: [
         { role: "system", content: "Language assessment JSON generator. Pure native scripts only. No romanization." },
         { role: "user", content: prompt }
       ],
-      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" },
       temperature: 0.5,
     });

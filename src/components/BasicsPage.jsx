@@ -544,10 +544,10 @@ const BasicsPage = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (userData && section === 'phrases' && !flashcards.length && !genLoading) {
+    if (userData && section === 'phrases' && !flashcards.length && !genLoading && !error) {
       generatePhrases();
     }
-  }, [section, userData, flashcards.length, genLoading, generatePhrases]);
+  }, [section, userData, flashcards.length, genLoading, error, generatePhrases]);
 
   if (loading) return (
     <div className="min-h-screen bg-[#080a12] flex items-center justify-center" style={{ fontFamily: "'Sora','DM Sans',sans-serif" }}>
