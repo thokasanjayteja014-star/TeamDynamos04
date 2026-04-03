@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generateBasicsData, generateBasicsQuiz } from '../grok';
+import { generateBasicsData, generateBasicsQuiz } from '../groq';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 

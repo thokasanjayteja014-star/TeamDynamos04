@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { generateLevelContent, validateAnswer } from '../grok';
+import { generateLevelContent, validateAnswer } from '../groq';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import Confetti from 'react-confetti';

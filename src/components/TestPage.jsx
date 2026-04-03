@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generatePlacementTest, validateAnswer } from '../grok';
+import { generatePlacementTest, validateAnswer } from '../groq';
 import { auth, db } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import DragDropAnswer from './DragDropAnswer';
